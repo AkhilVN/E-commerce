@@ -4,9 +4,31 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const fileUpload = require('express-fileupload')
 const cookieParser = require('cookie-parser')
+const swaggerUI = require("swagger-ui-express")
+const swaggerJsDoc = require("swagger-jsdoc")
 
+
+const options = {
+    definition: {
+        openapi: "3.0.0",
+        info: {
+            title: "Ecommerce API",
+            version: "1.0.0",
+            description: "A simple e-commerce api using express Js"
+        },
+        servers: [
+            {
+                url: "http://localhost:5000"
+            }
+        ],
+    },
+    apis: ["./routes/*.js"]
+}
+const specs = swaggerJsDoc(options)
 
 const app = express()
+
+app.use("/api-docs",swaggerUI.serve, swaggerUI.setup(specs))
 app.use(express.json())
 app.use(cookieParser())
 app.use(cors())
